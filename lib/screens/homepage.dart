@@ -36,12 +36,16 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Consumer<TaskView>(
-        builder: (context,taskProvider,_){
+      body: Consumer<TaskView>(builder: (context, taskProvider, _) {
         return ListView.separated(
           itemBuilder: (context, index) {
-            final Task task =taskProvider.tasks[index];
-            return taskWidget(task:task);
+            final Task task = taskProvider.tasks[index];
+            return taskWidget(
+              task: task,
+              onTap: () {
+                taskProvider.deleteTask(taskProvider.tasks[index]);
+              },
+            );
           },
           separatorBuilder: (context, index) {
             return const Divider(
@@ -52,29 +56,32 @@ class HomePage extends StatelessWidget {
           },
           itemCount: taskProvider.tasks.length,
         );
-        }
-      ),
-  
+      }),
       floatingActionButton: AddTaskButton(),
     );
   }
 }
 
 class taskWidget extends StatelessWidget {
-  const taskWidget({
+  taskWidget({
     super.key,
     required this.task,
+    required this.onTap,
   });
 
   final Task task;
+  void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(task.name,
-          style: const TextStyle(color: Colors.white)),
+      title: Text(task.name, style: const TextStyle(color: Colors.white)),
       subtitle:
           Text("${task.date}, ${task.time}", style: TextStyle(color: primary)),
+      trailing: InkWell(
+        onTap: onTap,
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
     );
   }
 }
@@ -139,13 +146,13 @@ class AddTaskButton extends StatelessWidget {
                             title: "Enter Date",
                             readOnly: true,
                             icon: Icons.calendar_month,
-                            onTap: () async{
+                            onTap: () async {
                               DateTime? date = await showDatePicker(
                                   context: context,
                                   firstDate: DateTime.now(),
                                   lastDate: DateTime(2030));
 
-                                  taskProvider.setDate(date);
+                              taskProvider.setDate(date);
                             },
                             controller: taskProvider.dateCont,
                           ),
@@ -153,16 +160,17 @@ class AddTaskButton extends StatelessWidget {
                             height: 10,
                           ),
                           CustomInputFeild(
-                              title: "Enter Time",
-                              readOnly: true,
-                              icon: Icons.lock_clock,
-                              onTap: ()async{
-                                TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-                                taskProvider.setTime(time);
-                              },
-                              controller: taskProvider.timeCont,
-                              ),
-                              
+                            title: "Enter Time",
+                            readOnly: true,
+                            icon: Icons.lock_clock,
+                            onTap: () async {
+                              TimeOfDay? time = await showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now());
+                              taskProvider.setTime(time);
+                            },
+                            controller: taskProvider.timeCont,
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -171,7 +179,7 @@ class AddTaskButton extends StatelessWidget {
                               child: ElevatedButton(
                                   onPressed: () {
                                     taskProvider.addTask();
-                                    if(context.mounted){
+                                    if (context.mounted) {
                                       Navigator.pop(context);
                                     }
                                   },
@@ -204,7 +212,6 @@ class CustomInputFeild extends StatelessWidget {
   void Function(String)? onChanged;
   void Function()? onTap;
   final TextEditingController? controller;
-
 
   @override
   Widget build(BuildContext context) {

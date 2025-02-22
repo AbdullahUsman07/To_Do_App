@@ -79,4 +79,9 @@ class TaskView extends ChangeNotifier{
     notifyListeners();
 
   }
+
+  void deleteTask(Task task){
+    tasks.remove(task);
+    notifyListeners();
+  }
 }

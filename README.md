@@ -1,16 +1,33 @@
-# project_one
+<h1 align="center">📝 Simple To-Do App</h1>
 
-A new Flutter project.
+<p align="center">
+  A simple To-Do app using Flutter and Provider for state management. Users can add tasks with date and time and delete them when completed.
+</p>
 
-## Getting Started
+<h2>📌 Features</h2>
+<ul>
+  <li>Add tasks with date and time</li>
+  <li>Delete tasks when completed</li>
+  <li>State management using Provider</li>
+</ul>
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+<h2>📂 Project Structure</h2>
+<pre>
+lib/
+ ├── main.dart
+ ├── models/
+ │   ├── task.dart
+ ├── viewModel/
+ │   ├── taskView.dart
+ ├── screens/
+ │   ├── home_screen.dart
+ ├── widgets/
+ │   ├── task_tile.dart
+</pre>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<h2>👨‍💻 Usage</h2>
+<p>Run the app in your Flutter environment and start adding tasks!</p>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
