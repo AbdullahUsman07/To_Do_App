@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo_App/models/task.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class TaskView extends ChangeNotifier{
 
@@ -11,6 +13,10 @@ class TaskView extends ChangeNotifier{
 
   final TextEditingController dateCont = TextEditingController();
   final TextEditingController timeCont = TextEditingController();
+
+  TaskView(){
+    loadTasks();
+  }
 
   bool get isValid => taskName!=null && dateCont.text.isNotEmpty && timeCont.text.isNotEmpty;
 
@@ -76,12 +82,36 @@ class TaskView extends ChangeNotifier{
     dateCont.clear();
     timeCont.clear();
     tasks.add(task);
+    saveTasks();
     notifyListeners();
 
   }
 
   void deleteTask(Task task){
     tasks.remove(task);
+    saveTasks();
     notifyListeners();
   }
+
+  // saving the tasks using shared prefs
+  Future<void> saveTasks()async{
+    final prefs = await SharedPreferences.getInstance();
+    List<Map<String,dynamic>> taskList = tasks.map((task) =>task.toJson()).toList();
+    prefs.setString('tasks', jsonEncode(taskList)); 
+  }
+
+  // load the stored tasks using
+  Future<void> loadTasks()async{
+    final prefs = await SharedPreferences.getInstance();
+    String? taskJson = prefs.getString('tasks');
+
+    if(taskJson != null){
+      List<dynamic> decoded = jsonDecode(taskJson);
+      tasks = decoded.map((task) => Task.fromJson(task)).toList();
+      
+    }
+
+    notifyListeners();
+  }
+
 }

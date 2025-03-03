@@ -1,0 +1,2 @@
+D:/clone-project/To_Do_App/android/app/.cxx/Debug/31671i6o/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/clone-project/To_Do_App/android/app/.cxx/Debug/31671i6o/arm64-v8a/CMakeFiles/rebuild_cache.dir
